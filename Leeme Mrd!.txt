@@ -1,0 +1,17 @@
+Para tener acceso como super usuario hacen una inserción desde la base de datos luego lo actualizan
+===================================================================================================
+
+INSERT INTO users (username, email, password_hash, role, points) 
+VALUES (
+    'SuperAdmin', 
+    'admin@educatex.com', 
+    '$2b$10$McHORnt6NflwdMLznHwZX.f.NnN1ExLnXopQ0uT.B5hb.8k2Hdx8S', -- la clase es 123456
+    'admin', 
+    123
+);
+
+Select * from users
+
+UPDATE users 
+SET role = 'admin' 
+WHERE email = 'admin@educatex.com';

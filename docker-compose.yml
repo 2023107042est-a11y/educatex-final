@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: educatex_db_docker
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: educatex_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/create_educatex_schema.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    container_name: educatex_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_NAME=educatex_db
+      - PORT=5000
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: educatex_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    depends_on:
+      - backend
